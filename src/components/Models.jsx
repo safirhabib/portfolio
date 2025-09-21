@@ -13,6 +13,7 @@ import { Mercury } from './planets/Mercury'
 import { Pluto } from './planets/Pluto'
 import { Marker } from './planets/Marker'
 import { Sun } from './planets/Sun'
+import { EffectComposer, Outline, Selection } from '@react-three/postprocessing'
 function handleMouseEnter(events){
     console.log(events);
 }
@@ -38,13 +39,8 @@ export function Model(props) {
         
       <group rotation={[-Math.PI / 2, 0, 0]} scale={0.021}>
 
-       <Saturn 
-       nodes={nodes}
-       materials={materials}
-       toStandard={toStandard}
-       
-       
-       />
+      <Saturn nodes={nodes} materials={materials} toStandard={toStandard} />
+
         {/* Sun */}
         <Sun 
         nodes={nodes}
