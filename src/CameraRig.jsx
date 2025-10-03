@@ -2,6 +2,8 @@ import { useFrame } from "@react-three/fiber";
 import { useScroll } from "@react-three/drei";
 import * as THREE from "three";
 
+
+
 export function CameraRig() {
   const scroll = useScroll();
 
@@ -11,8 +13,8 @@ export function CameraRig() {
 
   useFrame((state) => {
     const offset = scroll.offset; // 0 → 1 across 3 pages
-    const startPage = 2 / 4;
-    const endPage = 1.0;
+    const startPage = 9 / 12;
+    const endPage = 12 / 12;
 
     let t = 0;
     if (offset <= startPage) {
@@ -22,7 +24,7 @@ export function CameraRig() {
     } else {
       t = (offset - startPage) / (endPage - startPage);
     }
-
+    
     // Interpolate position
     state.camera.position.lerpVectors(startPos, endPos, t);
 

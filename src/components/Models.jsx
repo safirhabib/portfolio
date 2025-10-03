@@ -37,7 +37,7 @@ export function Model(props) {
     
     <group {...props} dispose={null}>
         
-      <group rotation={[-Math.PI / 2, 0, 0]} scale={0.021}>
+      <group rotation={[-Math.PI / 2, 0, 0]} scale={0.021} visible={true}>
 
       <Saturn nodes={nodes} materials={materials} toStandard={toStandard} />
 
