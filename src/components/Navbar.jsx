@@ -1,23 +1,56 @@
-import { motion } from 'framer-motion'
+import React, { useEffect, useRef } from "react";
+import "./Navbar.css";
+import { SCENE_STATES } from "../assets/sceneStates";
 
-export default function Navbar() {
+export default function Navbar({ sceneState, showNavbar, scrollToPage }) {
+  const navRef = useRef(null);
+  const spotlightRef = useRef(null);
+
+  const icons = [
+    { id: SCENE_STATES.STAR_WARS_LOGO, emoji: "🌌", label: "Intro", page: 0 },
+    { id: SCENE_STATES.OPENING_TEXT, emoji: "📜", label: "Text", page: 3 },
+    { id: SCENE_STATES.SOLAR_SYSTEM, emoji: "🪐", label: "Solar", page: 12 },
+  ];
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const spotlight = spotlightRef.current;
+    if (!nav || !spotlight) return;
+
+    const activeIndex = icons.findIndex(icon => icon.id === sceneState);
+    const items = nav.querySelectorAll('.dock-item');
+    const activeItem = items[activeIndex];
+
+    if (activeItem) {
+      const { offsetLeft, offsetWidth } = activeItem;
+      spotlight.style.left = `${offsetLeft + offsetWidth / 2}px`;
+      spotlight.style.opacity = 1;
+    }
+  }, [sceneState]);
+
+  const handleIconClick = (icon) => {
+    if (scrollToPage) {
+      scrollToPage(icon.page);
+    }
+  };
+
+  if (!showNavbar) return null;
+
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
-      className="fixed top-0 left-0 w-full px-8 py-4 flex justify-between items-center bg-black/70 backdrop-blur-md text-white shadow-lg z-50"
-    >
-      <div className="text-2xl font-bold tracking-widest">
-        SAFIR<span className="text-yellow-400">VERSE</span>
+    <div className="navbar-container top">
+      <div className="dock" ref={navRef}>
+        <div className="spotlight" ref={spotlightRef}></div>
+        {icons.map(icon => (
+          <div
+            key={icon.id}
+            className={`dock-item ${sceneState === icon.id ? "active" : ""}`}
+            onClick={() => handleIconClick(icon)}
+          >
+            <span className="icon">{icon.emoji}</span>
+            <span className="tooltip">{icon.label}</span>
+          </div>
+        ))}
       </div>
-
-      <ul className="flex gap-6 text-lg">
-        <li className="hover:text-yellow-400 transition-colors cursor-pointer">Home</li>
-        <li className="hover:text-yellow-400 transition-colors cursor-pointer">Projects</li>
-        <li className="hover:text-yellow-400 transition-colors cursor-pointer">Skills</li>
-        <li className="hover:text-yellow-400 transition-colors cursor-pointer">Contact</li>
-      </ul>
-    </motion.nav>
-  )
+    </div>
+  );
 }
